@@ -152,8 +152,9 @@ with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
     gr.Markdown("## 🖼️ Interactive Image Mosaic Generator")
     gr.Markdown("This tool creates a photo mosaic using an adaptive grid. **Upload an image and a ZIP file of tiles to begin.**")
     with gr.Row():
-        input_img = gr.Image(type="numpy", label="Upload Your Image")
-        output_img = gr.Image(type="numpy", label="Mosaic Image")
+        # ✅ FIX: Added a fixed height to prevent the layout from breaking
+        input_img = gr.Image(type="numpy", label="Upload Your Image", height=400)
+        output_img = gr.Image(type="numpy", label="Mosaic Image", height=400)
 
     with gr.Accordion("Settings", open=True):
         grid_size = gr.Slider(8, 64, step=16, value=64, label="Starting Grid Size")
@@ -185,8 +186,9 @@ with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
 
     gr.Examples(
         examples=[
-            ["sample2.png", 32, None, 0.2, 50, 4],
-            ["sample1.png", 32, None, 0.2, 40, 8],
+            ["sample2.png", 32, None, 0.2, 40, 4],
+            ["sample1.png", 32, None, 0.2, 100, 8],
+
         ],
         inputs=inputs,
         outputs=outputs,
