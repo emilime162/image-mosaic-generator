@@ -146,7 +146,7 @@ def pipeline(image, grid_size, zip_file, blend, var_thresh, min_size, target_siz
     except Exception as e: metrics = f"Error computing similarity: {str(e)}"
 
     if tmpdir: shutil.rmtree(tmpdir)
-    return mosaic, metrics
+    return image, mosaic, metrics
 
 # ---- Step 7: Gradio Interface (Simplified) ----
 with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
@@ -170,7 +170,7 @@ with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
     
     # ✅ REMOVED: tile_mode removed from inputs list
     inputs = [input_img, grid_size, zip_file, blend, var_thresh, min_size]
-    outputs = [output_img, metrics_box]
+    outputs = [input_img,output_img, metrics_box]
     
     run_btn.click(pipeline, inputs=inputs, outputs=outputs)
     
