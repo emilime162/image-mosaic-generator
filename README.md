@@ -1,12 +1,6 @@
 ---
-title: Image Mosaic Generator
-emoji: 👁
-colorFrom: purple
-colorTo: purple
-sdk: gradio
-sdk_version: 5.47.0
+title: Image_Mosaic_Generator
 app_file: app.py
-pinned: false
+sdk: gradio
+sdk_version: 5.45.0
 ---
-
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
