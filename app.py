@@ -18,7 +18,7 @@ def compute_variance(block):
     gray = np.dot(block[..., :3], [0.299, 0.587, 0.114])
     return np.var(gray)
 
-# ---- Recursive split function (Simplified) ----
+# ---- Recursive split function  ----
 def split_and_classify(img, x, y, size, min_size=8, var_thresh=500,
                        tiles=None, tile_avgs=None):
     """
@@ -44,8 +44,7 @@ def split_and_classify(img, x, y, size, min_size=8, var_thresh=500,
             split_and_classify(img, x + half, y + half, half, min_size, var_thresh, tiles, tile_avgs)
         )
     else:
-        # ✅ REMOVED: Logic for "Color Blocks" is gone.
-        # Now it either uses an image tile or defaults to the original block if no tiles are loaded.
+        # uses an image tile or defaults to the original block if no tiles are loaded.
         if tiles is not None and tile_avgs is not None:
             avg_color = block.mean(axis=(0,1))
             dists = np.linalg.norm(tile_avgs - avg_color, axis=1)
@@ -57,7 +56,7 @@ def split_and_classify(img, x, y, size, min_size=8, var_thresh=500,
 
         return [((x, y, size), classified)]
 
-# ---- Adaptive mosaic generator (Simplified) ----
+# ---- Adaptive mosaic generator ----
 def mosaic_generator(image, start_size=32, tile_folder=None, blend=0.0,
                      target_size=256, var_thresh=500, min_size=8):
     """
@@ -113,7 +112,7 @@ def compare_similarity(original, mosaic, target_size=256):
     ssim_val = ssim(gray_original, gray_mosaic, data_range=255)
     return float(mse), float(ssim_val)
 
-# ---- Step 6: Pipeline (Simplified) ----
+# ---- Step 6: Pipeline ----
 DEFAULT_TILESET = "./tiles.zip" 
 
 def pipeline(image, grid_size, zip_file, blend, var_thresh, min_size, target_size=256):
@@ -148,7 +147,7 @@ def pipeline(image, grid_size, zip_file, blend, var_thresh, min_size, target_siz
     if tmpdir: shutil.rmtree(tmpdir)
     return image, mosaic, metrics
 
-# ---- Step 7: Gradio Interface (Simplified) ----
+# ---- Step 7: Gradio Interface ----
 with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
     gr.Markdown("## 🖼️ Interactive Image Mosaic Generator")
     gr.Markdown("This tool creates a photo mosaic using an adaptive grid. **Upload an image and a ZIP file of tiles to begin.**")
@@ -163,12 +162,10 @@ with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
         blend = gr.Slider(0, 1, step=0.05, value=0.0, label="Blending (0=Tiles, 1=Original)")
         
     zip_file = gr.File(label="Upload Tile Set (ZIP of images)", file_types=[".zip"])
-    # ✅ REMOVED: The tile_mode dropdown is gone.
 
     metrics_box = gr.Textbox(label="📊 Similarity Metrics")
     run_btn = gr.Button("Generate Mosaic", variant="primary")
     
-    # ✅ REMOVED: tile_mode removed from inputs list
     inputs = [input_img, grid_size, zip_file, blend, var_thresh, min_size]
     outputs = [input_img,output_img, metrics_box]
     
@@ -186,7 +183,6 @@ with gr.Blocks(title="Adaptive Mosaic Generator") as demo:
         with zipfile.ZipFile(DEFAULT_TILESET, 'w') as z: z.write(fname, arcname='red.png')
         os.remove(fname)
 
-    # ✅ REMOVED: tile_mode argument from examples
     gr.Examples(
         examples=[
             ["sample2.png", 32, None, 0.2, 50, 4],
